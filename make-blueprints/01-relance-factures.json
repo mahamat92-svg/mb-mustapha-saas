@@ -1,0 +1,96 @@
+{
+  "name": "MB Mustapha — 1. Relance des factures impayées (WhatsApp + SMS)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": {
+        "hook": "afriflow_relance",
+        "maxResults": 1
+      },
+      "mapper": {},
+      "metadata": {
+        "designer": { "x": 0, "y": 0 },
+        "restore": {},
+        "parameters": { "hook": { "label": "MB Mustapha — Relance impayés" } }
+      },
+      "flags": {},
+      "notes": "1) Créez le webhook, 2) copiez son adresse dans la variable MAKE_WEBHOOK_RELANCE sur Vercel, 3) MB Mustapha enverra ici les factures impayées (déclenchement manuel ou cron de 7h)."
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": { "designer": { "x": 300, "y": 0 } },
+      "flags": {},
+      "notes": "On envoie le message sur WhatsApp ET par SMS (au cas où le client n'a pas WhatsApp)."
+    },
+    {
+      "id": 3,
+      "module": "whatsapp-business:sendMessage",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "phone_number_id": "{{connection.phoneNumberId}}",
+        "recipient": "{{1.data.telephone}}",
+        "type": "text",
+        "text": "{{1.data.message}}"
+      },
+      "metadata": { "designer": { "x": 620, "y": -120 } },
+      "flags": {},
+      "notes": "Remplacez l'exemple {{1.data.telephone}} par le numéro du client (champ « telephone » du client — à compléter dans MB Mustapha pour obtenir un lien direct)."
+    },
+    {
+      "id": 4,
+      "module": "africastalking:sendSMS",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "to": "{{1.data.telephone}}",
+        "message": "{{1.data.message}}"
+      },
+      "metadata": { "designer": { "x": 620, "y": 60 } },
+      "flags": {},
+      "notes": "Africa's Talking couvre la majorité des pays de la zone. Sinon, utilisez le module SMS de votre opérateur local."
+    },
+    {
+      "id": 5,
+      "module": "google-sheets:addRow",
+      "version": 2,
+      "parameters": {},
+      "mapper": {
+        "sheetId": "{{connection.sheet}}",
+        "values": [
+          "{{now}}",
+          "{{1.data.facture}}",
+          "{{1.data.client}}",
+          "{{1.data.resteAPayer}}",
+          "{{1.data.joursDeRetard}}",
+          "Relance envoyée"
+        ]
+      },
+      "metadata": { "designer": { "x": 620, "y": 240 } },
+      "flags": {},
+      "notes": "Journal des relances : indispensable pour prouver au patron combien d'argent a été relancé (argument commercial)."
+    }
+  ],
+  "metadata": {
+    "instant": true,
+    "version": 1,
+    "designer": { "orphans": [] },
+    "scenario": {
+      "roundtrips": 1,
+      "maxErrors": 3,
+      "autoCommit": true,
+      "autoCommitTriggerLast": true,
+      "sequential": false,
+      "confidential": false,
+      "dataloss": false,
+      "dlq": false,
+      "freshVariables": false
+    }
+  }
+}

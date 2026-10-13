@@ -1,0 +1,619 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<title>MB Mustapha — Flyers A4 à imprimer (30 premiers clients)</title>
+<style>
+  /* ============================================================
+     FLYERS MB MUSTAPHA — prêts à imprimer (A4, portrait)
+     • Aucune ressource externe : tout est dans ce fichier.
+     • Imprimer : Ctrl+P / Cmd+P → format A4 → marges « aucune » → couleurs activées.
+     • Le numéro WhatsApp est laissé en pointillés : écrivez-le au
+       marqueur avant de photocopier, OU envoyez-le moi et je le
+       propage partout (flyers + application + script de prospection).
+     ============================================================ */
+  :root{
+    --bleu:#1d4ed8; --bleu-fonce:#1e3a8a; --bleu-clair:#eff6ff; --accent:#f59e0b;
+    --encre:#0f172a; --gris:#475569;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:#e2e8f0;font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;color:var(--encre)}
+  .page{
+    width:210mm;min-height:297mm;background:#fff;margin:8mm auto;padding:14mm;
+    display:flex;flex-direction:column;box-shadow:0 2px 12px rgba(0,0,0,.18);position:relative;
+  }
+  @media print{
+    body{background:#fff}
+    .page{margin:0;box-shadow:none;page-break-after:always;min-height:auto;height:297mm}
+    .page:last-child{page-break-after:auto}
+  }
+  @page{size:A4 portrait;margin:0}
+
+  /* --- Bandeau de marque --- */
+  .entete{display:flex;align-items:center;justify-content:space-between;gap:6mm;border-bottom:3px solid var(--bleu);padding-bottom:4mm}
+  .logo{display:flex;align-items:center;gap:3mm}
+  .logo .carre{width:13mm;height:13mm;border-radius:3mm;background:var(--bleu);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:6.2mm}
+  .logo .nom{font-weight:800;font-size:5.6mm;line-height:1;white-space:nowrap}
+  .logo .baseline{font-size:2.9mm;color:var(--gris);letter-spacing:.2px}
+  .entete .ville{text-align:right;font-size:2.8mm;color:var(--gris);line-height:1.5}
+
+  /* --- Titre --- */
+  .kicker{margin-top:7mm;display:inline-block;background:var(--accent);color:#3b2500;font-weight:800;font-size:3mm;letter-spacing:1.4px;padding:1.5mm 3.5mm;border-radius:99px}
+  h1{font-size:13mm;line-height:1.03;margin:3mm 0 0;letter-spacing:-.4px}
+  h1 small{display:block;font-size:5mm;font-weight:600;color:var(--bleu);margin-top:2.5mm;letter-spacing:0}
+  .chapeau{margin-top:4mm;font-size:4.1mm;line-height:1.55;color:var(--gris);max-width:165mm}
+  .chapeau strong{color:var(--encre)}
+
+  /* --- Colonnes problème / solution --- */
+  .duo{display:flex;gap:6mm;margin-top:7mm}
+  .col{flex:1;border-radius:3mm;padding:5mm}
+  .col h2{font-size:3.4mm;text-transform:uppercase;letter-spacing:1.1px;margin:0 0 3mm}
+  .col ul{margin:0;padding-left:5mm;font-size:3.5mm;line-height:1.7}
+  .col li{margin-bottom:2.2mm}
+  .probleme{background:#fef2f2;border:1px solid #fecaca}
+  .probleme h2{color:#b91c1c}
+  .solution{background:var(--bleu-clair);border:1px solid #bfdbfe}
+  .solution h2{color:var(--bleu)}
+
+  /* --- Bandeau chiffres --- */
+  .chiffres{display:flex;gap:4mm;margin-top:7mm}
+  .chiffre{flex:1;text-align:center;border:1px dashed #cbd5e1;border-radius:3mm;padding:4mm 2mm}
+  .chiffre b{display:block;font-size:7.5mm;color:var(--bleu);line-height:1}
+  .chiffre span{font-size:2.8mm;color:var(--gris);display:block;margin-top:1.8mm}
+
+  /* --- Prix --- */
+  .prix{margin-top:7mm;background:var(--bleu-fonce);color:#fff;border-radius:3mm;padding:5mm 6mm;display:flex;align-items:center;justify-content:space-between;gap:5mm}
+  .prix .gauche b{font-size:5.6mm;display:block}
+  .prix .gauche span{font-size:3.2mm;opacity:.85}
+  .prix .droite{text-align:right}
+  .prix .droite b{font-size:11mm;line-height:1}
+  .prix .droite span{font-size:3mm;opacity:.85;display:block}
+
+  /* --- Appel à l'action --- */
+  .appel{margin-top:7mm;display:flex;gap:6mm;align-items:stretch}
+  .appel .texte{flex:1;border:2px solid var(--bleu);border-radius:3mm;padding:5mm}
+  .appel .texte h2{margin:0 0 2.5mm;font-size:5mm;color:var(--bleu)}
+  .appel .texte p{margin:0;font-size:3.5mm;line-height:1.6;color:var(--gris)}
+  .wapp{margin-top:3.5mm;font-size:4.6mm;font-weight:800}
+  .wapp i{font-style:normal;border-bottom:1.4px dotted var(--encre);display:inline-block;min-width:58mm}
+  .qr{width:38mm;border:2px dashed #94a3b8;border-radius:3mm;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:3mm;font-size:2.7mm;color:#64748b}
+
+  /* --- Promesse --- */
+  .promesse{margin-top:7mm;background:#fffbeb;border-left:4px solid var(--accent);border-radius:2mm;padding:4mm 5mm;font-size:3.4mm;line-height:1.6}
+  .promesse b{color:#92400e}
+
+  /* --- Pied de page signé --- */
+  .pied{margin-top:auto;padding-top:6mm;border-top:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:flex-end;gap:5mm}
+  .pied .signature{font-size:3.4mm;line-height:1.6}
+  .pied .signature b{font-size:4.4mm;display:block}
+  .pied .villes{font-size:2.7mm;color:var(--gris);text-align:right;line-height:1.6;max-width:70mm}
+
+  /* --- Page cartes de visite --- */
+  .titre-grille{margin:0 0 6mm;font-size:6mm}
+  .grille{display:grid;grid-template-columns:1fr 1fr;gap:3mm}
+  .carte{border:1px solid #cbd5e1;border-radius:2mm;height:54mm;padding:4mm;display:flex;flex-direction:column;justify-content:space-between}
+  .carte .haut{display:flex;align-items:center;gap:2.5mm}
+  .carte .haut .carre{width:9mm;height:9mm;border-radius:2mm;background:var(--bleu);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:5mm}
+  .carte .nom{font-weight:800;font-size:3.5mm;white-space:nowrap}
+  .carte .base{font-size:2.5mm;color:var(--gris)}
+  .carte .pers{font-size:3.3mm;line-height:1.5}
+  .carte .pers b{font-size:4mm}
+  .note{margin-top:6mm;background:#f1f5f9;border-radius:2mm;padding:4mm;font-size:3.2mm;color:var(--gris);line-height:1.6}
+</style>
+</head>
+<body>
+
+<!-- =====================================================================
+     FLYER 1 — COMMERÇANTS & GROSSISTES
+     ===================================================================== -->
+<section class="page">
+  <div class="entete">
+    <div class="logo">
+      <div class="carre">MB</div>
+      <div>
+        <div class="nom">MB Mustapha</div>
+        <div class="baseline">Factures · Recouvrement · Mobile Money</div>
+      </div>
+    </div>
+    <div class="ville">
+      Garoua · Maroua · N'Djaména<br />Moundou · Cotonou · Lomé
+    </div>
+  </div>
+
+  <div class="kicker">COMMERÇANTS, GROSSISTES, BOUTIQUES</div>
+  <h1>Vous savez exactement<br />qui vous doit de l'argent ?<small>MB Mustapha le sait pour vous — et relance à votre place.</small></h1>
+
+  <p class="chapeau">
+    Chaque mois, une partie de votre chiffre d'affaires dort chez vos clients. Vous le savez, mais vous n'avez pas
+    le temps d'appeler tout le monde. <strong>MB Mustapha note chaque facture, envoie un reçu par WhatsApp, relance
+    automatiquement les retardataires et encaisse par Mobile Money.</strong> Tout se passe sur votre téléphone,
+    en français, en FCFA — même avec une connexion faible.
+  </p>
+
+  <div class="duo">
+    <div class="col probleme">
+      <h2>Ce qui vous coûte de l'argent</h2>
+      <ul>
+        <li>Les factures écrites dans un cahier, impossibles à retrouver</li>
+        <li>Des clients qui « passent demain » depuis trois semaines</li>
+        <li>Vous n'osez pas relancer : ça vous fait perdre la face</li>
+        <li>Le stock part sans que personne ne sache combien il reste</li>
+      </ul>
+    </div>
+    <div class="col solution">
+      <h2>Ce que MB Mustapha fait à votre place</h2>
+      <ul>
+        <li>Facture créée en <b>30 secondes</b>, envoyée par WhatsApp avec QR à payer</li>
+        <li><b>Relance automatique</b> J+1, J+3, J+7 — vous n'appelez personne</li>
+        <li>Paiement <b>Mobile Money</b>, reçu envoyé au client et à vous</li>
+        <li>Stock, alertes de rupture et inventaire au même endroit</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chiffres">
+    <div class="chiffre"><b>30 s</b><span>pour créer une facture</span></div>
+    <div class="chiffre"><b>0</b><span>appel de relance à faire</span></div>
+    <div class="chiffre"><b>1 h</b><span>pour installer et être formé</span></div>
+    <div class="chiffre"><b>100 %</b><span>en français et en FCFA</span></div>
+  </div>
+
+  <div class="prix">
+    <div class="gauche">
+      <b>À partir de la formule Starter</b>
+      <span>Factures et relances illimitées · reçus · rapport mensuel · 1 utilisateur</span>
+    </div>
+    <div class="droite">
+      <b>9 900</b>
+      <span>FCFA / mois — sans engagement</span>
+    </div>
+  </div>
+
+  <div class="appel">
+    <div class="texte">
+      <h2>10 minutes de démonstration sur MON téléphone</h2>
+      <p>
+        Je viens à votre boutique avec mes propres écrans, vous me donnez le nom d'un de vos clients, et je crée
+        sa facture devant vous. Si ça ne vous sert à rien, je repars.
+      </p>
+      <div class="wapp">📱 WhatsApp : <i></i></div>
+      <p style="margin-top:2mm">Appelez ou écrivez — je réponds moi-même.</p>
+    </div>
+    <div class="qr">QR WhatsApp<br /><span style="font-size:2.4mm">(à coller ici)</span></div>
+  </div>
+
+  <div class="promesse">
+    <b>Garantie 30 jours :</b> si dans un mois vous ne gagnez ni temps ni argent, je vous rembourse
+    intégralement et vous récupérez toutes vos données. <b>Vos données restent les vôtres.</b>
+  </div>
+
+  <div class="pied">
+    <div class="signature">
+      <b>Mahamat Bouba Mustapha</b>
+      Fondateur · MB Mustapha<br />
+      Il me connaît, il me trouve : je suis d'ici.
+    </div>
+    <div class="villes">
+      Yaoundé · Garoua · Maroua · N'Djaména<br />Moundou · Sarh · Cotonou · Lomé
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     FLYER 2 — ÉCOLES PRIVÉES
+     ===================================================================== -->
+<section class="page">
+  <div class="entete">
+    <div class="logo">
+      <div class="carre">MB</div>
+      <div>
+        <div class="nom">MB Mustapha</div>
+        <div class="baseline">Frais scolaires · SMS aux parents · Mobile Money</div>
+      </div>
+    </div>
+    <div class="ville">Module <b>ScolaPay</b><br />Écoles & centres de formation</div>
+  </div>
+
+  <div class="kicker">DIRECTEURS D'ÉCOLE & CENTRES DE FORMATION</div>
+  <h1>Les frais scolaires<br />rentrent — sans que vous couriez après.<small>ScolaPay : SMS aux parents, encaissement Mobile Money, caisse claire par classe.</small></h1>
+
+  <p class="chapeau">
+    Vous encaissez les frais en deux ou trois tranches. Résultat : un cahier, des reçus perdus, une année qui
+    finit avec des impayés et un censeur qui passe deux jours à faire les listes. <strong>ScolaPay prévient
+    chaque parent par SMS avant l'échéance, encaisse par Mobile Money et vous montre en direct ce qui est rentré,
+    par classe et par élève.</strong>
+  </p>
+
+  <div class="duo">
+    <div class="col probleme">
+      <h2>Ce que vit votre école</h2>
+      <ul>
+        <li>Parents injoignables, paiements en retard jusqu'en fin d'année</li>
+        <li>Reçus contestés, cahier de caisse qui ne tombe jamais juste</li>
+        <li>2 jours par mois perdus à recopier les listes d'impayés</li>
+        <li>Impossible de dire au propriétaire combien il reste à encaisser</li>
+      </ul>
+    </div>
+    <div class="col solution">
+      <h2>Ce que ScolaPay fait</h2>
+      <ul>
+        <li><b>SMS automatique</b> au parent : montant exact dû et date limite</li>
+        <li>Paiement <b>Mobile Money</b> + reçu électronique numéroté</li>
+        <li><b>Caisse par classe</b>, par élève et par tranche, en temps réel</li>
+        <li>Rapport mensuel imprimable pour le propriétaire en 1 clic</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chiffres">
+    <div class="chiffre"><b>14 j</b><span>pour essayer gratuitement</span></div>
+    <div class="chiffre"><b>1 SMS</b><span>avant chaque échéance</span></div>
+    <div class="chiffre"><b>0</b><span>cahier de caisse à recopier</span></div>
+    <div class="chiffre"><b>1 clic</b><span>pour le rapport du propriétaire</span></div>
+  </div>
+
+  <div class="prix">
+    <div class="gauche">
+      <b>Formule Pro — pensons en FCFA par élève</b>
+      <span>300 élèves ≈ <b>83 FCFA par élève et par mois</b>. Un seul impayé récupéré par classe paie l'école entière.</span>
+    </div>
+    <div class="droite">
+      <b>24 900</b>
+      <span>FCFA / mois — sans engagement</span>
+    </div>
+  </div>
+
+  <div class="appel">
+    <div class="texte">
+      <h2>Je viens avec la liste de vos propres classes</h2>
+      <p>
+        Je vous montre les écrans, puis je crée les comptes de deux de vos classes avec les vrais noms des élèves.
+        Vos fonctions de caisse sont formées en une heure, sur place.
+      </p>
+      <div class="wapp">📱 WhatsApp : <i></i></div>
+    </div>
+    <div class="qr">QR WhatsApp<br /><span style="font-size:2.4mm">(à coller ici)</span></div>
+  </div>
+
+  <div class="promesse">
+    <b>Garantie 30 jours :</b> si les frais ne rentrent pas plus vite qu'avant, je vous rembourse.
+    <b>Les données de vos élèves restent chez vous</b> et s'exportent en fichier Excel sur simple demande.
+  </div>
+
+  <div class="pied">
+    <div class="signature">
+      <b>Mahamat Bouba Mustapha</b>
+      Fondateur · MB Mustapha<br />
+      Formation sur site incluse — je viens dans votre établissement.
+    </div>
+    <div class="villes">
+      Garoua · Maroua · N'Djaména<br />Moundou · Parakou · Lomé
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     FLYER 3 — COOPÉRATIVES & TONTINES
+     ===================================================================== -->
+<section class="page">
+  <div class="entete">
+    <div class="logo">
+      <div class="carre">MB</div>
+      <div>
+        <div class="nom">MB Mustapha</div>
+        <div class="baseline">Tontines · Coopératives · Cotisations</div>
+      </div>
+    </div>
+    <div class="ville">Module <b>NjangiPro</b><br />+ AgriMarché pour les produits agricoles</div>
+  </div>
+
+  <div class="kicker">BUREAUX DE TONTINE, NJANGI, SCOOPS, MUTUELLES</div>
+  <h1>Qui a cotisé ? Combien ?<br />Quand ?<small>Votre téléphone le sait — plus de dispute en fin de réunion.</small></h1>
+
+  <p class="chapeau">
+    Un cahier peut se perdre, s'effacer ou être contesté. <strong>Avec MB Mustapha, chaque cotisation se note en
+    10 secondes, le membre reçoit un SMS de confirmation, et le rapport de la réunion s'imprime ou s'envoie sur
+    WhatsApp</strong> avant même que l'assemblée se sépare. Personne ne peut plus dire « j'ai payé et ce n'est
+    pas marqué ».
+  </p>
+
+  <div class="duo">
+    <div class="col probleme">
+      <h2>Ce que vit votre coopérative</h2>
+      <ul>
+        <li>« J'ai payé » contre « ce n'est pas dans le cahier »</li>
+        <li>Le trésorier reçoit l'argent mais oublie de noter</li>
+        <li>Prêts internes accordés à l'amiable, jamais remboursés dans les délais</li>
+        <li>Impossible de sortir le compte de la semaine sans 3 heures de calcul</li>
+      </ul>
+    </div>
+    <div class="col solution">
+      <h2>Ce que NjangiPro fait</h2>
+      <ul>
+        <li><b>Cotisation enregistrée</b> en 10 secondes, reçu par SMS au membre</li>
+        <li><b>Rapport de réunion</b> imprimable (présents, montants, restes à payer)</li>
+        <li><b>Suivi des prêts</b> et des échéances internes, membre par membre</li>
+        <li>Les membres sans smartphone reçoivent tout par <b>SMS</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chiffres">
+    <div class="chiffre"><b>10 s</b><span>pour une cotisation</span></div>
+    <div class="chiffre"><b>100 %</b><span>des membres tracés</span></div>
+    <div class="chiffre"><b>SMS</b><span>de confirmation automatique</span></div>
+    <div class="chiffre"><b>3 min</b><span>pour le rapport de réunion</span></div>
+  </div>
+
+  <div class="prix">
+    <div class="gauche">
+      <b>Formule Coopérative</b>
+      <span>
+        Membres illimités · rapports de réunion · prêts internes · formation du bureau sur place
+        <br /><b>À 200 membres, cela fait 745 FCFA par membre et par an.</b>
+      </span>
+    </div>
+    <div class="droite">
+      <b>149 000</b>
+      <span>FCFA / mois</span>
+    </div>
+  </div>
+
+  <div class="appel">
+    <div class="texte">
+      <h2>Je viens à votre prochaine réunion (5 minutes)</h2>
+      <p>
+        Vous me donnez 5 minutes en début de séance. Je fais l'appel et la caisse devant tout le monde, et chaque
+        membre repart avec son SMS. Ensuite je forme 3 personnes du bureau.
+      </p>
+      <div class="wapp">📱 WhatsApp : <i></i></div>
+    </div>
+    <div class="qr">QR WhatsApp<br /><span style="font-size:2.4mm">(à coller ici)</span></div>
+  </div>
+
+  <div class="promesse">
+    <b>Garantie 30 jours :</b> si votre bureau ne finit pas la première réunion plus vite qu'avant, je vous
+    rembourse. <b>Formation de 3 personnes du bureau incluse</b>, sur place et sans supplément.
+  </div>
+
+  <div class="pied">
+    <div class="signature">
+      <b>Mahamat Bouba Mustapha</b>
+      Fondateur · MB Mustapha<br />
+      J'accompagne aussi les coopératives agricoles (pesées, livraisons, paie des membres).
+    </div>
+    <div class="villes">
+      N'Djaména · Moundou · Sarh · Abéché<br />Garoua · Maroua · Parakou · Sokodé
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     FLYER 4 — EMPLOYEURS & PAIE (CNPS / IRPP)
+     ===================================================================== -->
+<section class="page">
+  <div class="entete">
+    <div class="logo">
+      <div class="carre">MB</div>
+      <div>
+        <div class="nom">MB Mustapha</div>
+        <div class="baseline">Paie · CNPS/CNSS · IRPP/ITS · Bulletins</div>
+      </div>
+    </div>
+    <div class="ville">Module <b>PaieLocal</b><br />Cameroun · Tchad · Bénin · Togo</div>
+  </div>
+
+  <div class="kicker">EMPLOYEURS, ENTREPRISES, CHANTIERS, CLINIQUES, SÉCURITÉ</div>
+  <h1>Votre paie en 2 heures,<br />pas en 2 jours.<small>Journaliers pointés, CNPS/CNSS et IRPP calculés, bulletins imprimables.</small></h1>
+
+  <p class="chapeau">
+    Vous avez des mensuels et des journaliers. Chaque fin de mois, c'est la même bataille : les jours travaillés
+    contestés, les cotisations calculées à l'approximation, les bulletins écrits à la main. <strong>MB Mustapha pointe les
+    jours, calcule la cotisation CNPS/CNSS, l'abattement, l'impôt par tranches, puis sort le net à payer et le
+    coût réel de chaque employé.</strong>
+  </p>
+
+  <div class="duo">
+    <div class="col probleme">
+      <h2>Ce qui vous expose</h2>
+      <ul>
+        <li>Jours des journaliers contestés à chaque paie</li>
+        <li>Cotisations mal plafonnées → redressement à la clé</li>
+        <li>Aucun bulletin écrit remis au salarié (obligation légale)</li>
+        <li>Vous ne connaissez pas le coût réel d'un employé</li>
+      </ul>
+    </div>
+    <div class="col solution">
+      <h2>Ce que PaieLocal fait</h2>
+      <ul>
+        <li><b>Pointage journalier</b> sur téléphone (+1 / −1 par jour), fin des litiges</li>
+        <li><b>Cotisations plafonnées</b> et impôt par tranches du pays, automatiques</li>
+        <li><b>Bulletin de paie imprimable</b> avec le détail expliqué au salarié</li>
+        <li><b>Coût employeur</b> affiché avant d'embaucher (négociez juste)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="chiffres">
+    <div class="chiffre"><b>2 h</b><span>pour toute la paie du mois</span></div>
+    <div class="chiffre"><b>4 pays</b><span>barèmes CNPS/CNSS + IRPP</span></div>
+    <div class="chiffre"><b>1 zéro</b><span>erreur de cotisation</span></div>
+    <div class="chiffre"><b>1 clic</b><span>pour la déclaration à verser</span></div>
+  </div>
+
+  <div class="prix">
+    <div class="gauche">
+      <b>Exemple réel (Cameroun)</b>
+      <span>Salaire brut 200 000 FCFA + 20 000 transport → <b>le salarié reçoit 193 541 FCFA</b>, l'entreprise
+      dépense <b>252 400 FCFA</b> tout compris. MB Mustapha vous donne ces deux chiffres, exactement.</span>
+    </div>
+    <div class="droite">
+      <b>24 900</b>
+      <span>FCFA / mois (Pro)</span>
+    </div>
+  </div>
+
+  <div class="appel">
+    <div class="texte">
+      <h2>Apportez votre dernier bulletin de paie</h2>
+      <p>
+        Je recalcule devant vous le bulletin d'un de vos employés. Si mes chiffres différent des vôtres, c'est
+        soit votre logiciel, soit le mien qui a un problème — et vous saurez lequel en 10 minutes.
+      </p>
+      <div class="wapp">📱 WhatsApp : <i></i></div>
+    </div>
+    <div class="qr">QR WhatsApp<br /><span style="font-size:2.4mm">(à coller ici)</span></div>
+  </div>
+
+  <div class="promesse">
+    <b>Transparence :</b> les barèmes sont paramétrés par pays et affichés dans l'application. Faites-les confirmer
+    une fois par an par votre comptable — c'est ce que je conseille moi-même à mes clients.
+    <b>Garantie 30 jours satisfait ou remboursé.</b>
+  </div>
+
+  <div class="pied">
+    <div class="signature">
+      <b>Mahamat Bouba Mustapha</b>
+      Fondateur · MB Mustapha<br />
+      Je viens former votre caissier ou votre comptable sur place.
+    </div>
+    <div class="villes">
+      Cameroun · Tchad · Bénin · Togo<br />Bulletins imprimables · Paie Mobile Money
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     PAGE 6 — AFFICHE VITRINE « ÉCRIVEZ-NOUS SUR WHATSAPP »
+     ===================================================================== -->
+<section class="page">
+  <div class="entete">
+    <div class="logo">
+      <div class="carre">MB</div>
+      <div>
+        <div class="nom">MB Mustapha</div>
+        <div class="baseline">Factures · Relances · Mobile Money</div>
+      </div>
+    </div>
+    <div class="ville">À coller en vitrine, à la caisse<br />ou sur la porte du bureau</div>
+  </div>
+
+  <div style="margin-top:16mm;text-align:center">
+    <p class="kicker" style="font-size:4mm">COMMERÇANTS · ÉCOLES · COOPÉRATIVES · ENTREPRISES</p>
+    <h1 style="font-size:17mm;line-height:1.02;margin-top:6mm">
+      Vos clients ne paient pas&nbsp;?<br />Écrivez-nous sur WhatsApp.
+    </h1>
+    <p class="chapeau" style="max-width:150mm;margin:7mm auto 0;font-size:5mm;text-align:center">
+      Factures envoyées par WhatsApp, relances automatiques, encaissement Mobile Money, stock, paie
+      CNPS/IRPP, frais scolaires, tontines. <strong>Démonstration gratuite de 10 minutes.</strong>
+    </p>
+  </div>
+
+  <div style="display:flex;gap:8mm;align-items:center;justify-content:center;margin-top:12mm">
+    <div style="width:78mm;height:78mm;border:3px dashed #94a3b8;border-radius:4mm;display:flex;align-items:center;justify-content:center;text-align:center;color:#64748b;font-size:3.4mm;padding:5mm">
+      <div>
+        <div style="font-size:6mm;font-weight:800;color:#1d4ed8">QR WhatsApp</div>
+        <div style="margin-top:3mm">Collez ici le QR de votre numéro WhatsApp<br />(WhatsApp Business → Outils professionnels → Code QR)</div>
+      </div>
+    </div>
+    <div style="max-width:70mm">
+      <p style="font-size:6.5mm;font-weight:800;margin:0 0 3mm">ou appelez directement :</p>
+      <p style="font-size:5.4mm;margin:0;font-weight:700">📱 <span style="border-bottom:1.6px dotted #0f172a;display:inline-block;min-width:52mm">&nbsp;</span></p>
+      <p style="font-size:3.6mm;color:#475569;margin-top:4mm">
+        (écrivez votre numéro au marqueur avant de photocopier)
+      </p>
+    </div>
+  </div>
+
+  <div style="margin-top:12mm;display:flex;gap:5mm">
+    <div class="col solution" style="flex:1;text-align:center">
+      <h2 style="justify-content:center">Ce que vous gagnez</h2>
+      <ul style="padding-left:5mm;text-align:left">
+        <li>⏱️ <b>30 secondes</b> par facture, au lieu d'une demi-journée</li>
+        <li>🔁 <b>Zéro relance</b> à faire vous-même : le logiciel s'en occupe</li>
+        <li>📱 <b>Mobile Money</b> : l'argent entre, le reçu part tout seul</li>
+        <li>👷 <b>Paie CNPS/IRPP</b> calculée, bulletin imprimé</li>
+        <li>🎓 <b>Frais scolaires</b> : parents prévenus par SMS</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="promesse" style="margin-top:10mm;text-align:center;font-size:4.2mm">
+    <b>Garantie 30 jours satisfait ou remboursé.</b> Installation et formation sur place.
+    Vos données restent les vôtres, exportables en Excel à tout moment.
+  </div>
+
+  <div class="pied">
+    <div class="signature">
+      <b>Mahamat Bouba Mustapha</b>
+      Fondateur · MB Mustapha<br />
+      Je réponds moi-même, en français, 7j/7.
+    </div>
+    <div class="villes">
+      Garoua · Maroua · N'Djaména · Moundou<br />Cotonou · Lomé · et partout par appel vidéo
+    </div>
+  </div>
+</section>
+
+<!-- =====================================================================
+     PAGE 7 — CARTES DE VISITE (10 par page A4)
+     ===================================================================== -->
+<section class="page">
+  <h1 class="titre-grille">Cartes de visite — à découper (10 par page)</h1>
+
+  <div class="grille">
+    <!-- 10 cartes identiques -->
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+    <div class="carte">
+      <div class="haut"><div class="carre">MB</div><div><div class="nom">MB Mustapha</div><div class="base">La gestion qui fait rentrer l'argent</div></div></div>
+      <div class="pers"><b>Mahamat Bouba Mustapha</b><br />Fondateur<br />📱 ______________________<br />✉️ ______________________</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Mode d'emploi :</b> écrivez votre numéro WhatsApp et votre e-mail à la main (ou revenez me les donner :
+    je réimprime ces 5 pages avec le numéro inséré partout). Imprimez en couleur sur du papier un peu épais si
+    possible, découpez, et gardez toujours 10 cartes sur vous. <b>Une carte donnée est une visite de gagnée.</b>
+    <br /><br />
+    <b>Conseil terrain :</b> ne laissez jamais un flyer sans avoir demandé une date de rappel. Notez-la dans
+    <code>prospection/plan-30-clients.csv</code> dès que vous remontez en moto.
+  </div>
+</section>
+
+</body>
+</html>

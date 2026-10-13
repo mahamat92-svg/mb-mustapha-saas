@@ -1,0 +1,90 @@
+{
+  "name": "MB Mustapha — 4. AfriBot : WhatsApp entrant → commande/facture (assistant IA)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "whatsapp-business:watchMessages",
+      "version": 2,
+      "parameters": { "limit": 10 },
+      "mapper": {},
+      "metadata": { "designer": { "x": 0, "y": 0 }, "restore": {}, "parameters": {} },
+      "flags": {},
+      "notes": "Nécessite un numéro WhatsApp Business connecté à Make (Cloud API). Chaque message entrant déclenche le scénario."
+    },
+    {
+      "id": 2,
+      "module": "openai-gpt-3:createChatCompletion",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "model": "gpt-4o-mini",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Tu es AfriBot, l'assistant d'une PME africaine. Tu réponds en français, en anglais, en arabe tchadien ou en pidgin selon la langue du client. Tu connais les prix et les produits fournis dans le message. Tu prends les commandes, tu donnes les prix en FCFA, tu ne promets jamais une remise non autorisée. Si le client veut parler à un humain, réponds EXACTEMENT : ESCALADE_HUMAIN. Sinon, termine toujours par une question fermée pour confirmer la commande (ex. : « Je prépare la facture ? »)."
+          },
+          {
+            "role": "user",
+            "content": "{{1.messages[].text.body}}"
+          }
+        ]
+      },
+      "metadata": { "designer": { "x": 300, "y": -60 } },
+      "flags": {},
+      "notes": "Utilisez le module OpenAI, Gemini ou Claude disponible dans votre compte Make. Remplacez « gpt-4o-mini » par le modèle que vous avez activé."
+    },
+    {
+      "id": 3,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": { "designer": { "x": 600, "y": 0 } },
+      "flags": {},
+      "notes": "Filtre A : la réponse contient ESCALADE_HUMAIN → notifier le patron. Filtre B : sinon → répondre au client, et si la réponse parle de facture/commande → créer la facture dans MB Mustapha."
+    },
+    {
+      "id": 4,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "url": "https://VOTRE-DOMAINE.vercel.app/api/webhooks/make",
+        "method": "post",
+        "headers": [
+          { "name": "Authorization", "value": "Bearer VOTRE_AFRIFLOW_API_KEY" },
+          { "name": "x-afriflow-event", "value": "commande.whatsapp" }
+        ],
+        "body": {
+          "event": "commande.whatsapp",
+          "orgId": "VOTRE_ORG_ID",
+          "data": {
+            "clientName": "{{1.contacts[].profile.name}}",
+            "montant": "{{2.montant_detecte}}",
+            "libelle": "{{2.description_commande}}",
+            "telephone": "{{1.messages[].from}}"
+          }
+        },
+        "parseResponse": true
+      },
+      "metadata": { "designer": { "x": 900, "y": -60 } },
+      "flags": {},
+      "notes": "Le champ montant doit être extrait par l'IA : demandez-lui de renvoyer un JSON strict {montant, description} pour éviter les erreurs."
+    },
+    {
+      "id": 5,
+      "module": "whatsapp-business:sendMessage",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "recipient": "{{1.messages[].from}}",
+        "type": "text",
+        "text": "{{2.choices[].message.content}}"
+      },
+      "metadata": { "designer": { "x": 900, "y": 120 } },
+      "flags": {},
+      "notes": "La réponse envoyée au client. Pensez à ajouter votre lien de paiement Mobile Money."
+    }
+  ],
+  "metadata": { "instant": true, "version": 1, "designer": { "orphans": [] }, "scenario": { "roundtrips": 1, "maxErrors": 3, "autoCommit": true } }
+}

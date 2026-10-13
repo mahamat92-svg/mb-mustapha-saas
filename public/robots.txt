@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/
+Disallow: /espace-prive
+Disallow: /api/
+
+Sitemap: https://afriflow.africa/sitemap.xml

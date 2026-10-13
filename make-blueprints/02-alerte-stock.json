@@ -1,0 +1,65 @@
+{
+  "name": "MB Mustapha — 2. Alerte de rupture de stock (SMS gérant + message fournisseur)",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": { "hook": "afriflow_stock", "maxResults": 1 },
+      "mapper": {},
+      "metadata": { "designer": { "x": 0, "y": 0 }, "restore": {}, "parameters": {} },
+      "flags": {},
+      "notes": "Copiez l'adresse de ce webhook dans la variable MAKE_WEBHOOK_STOCK."
+    },
+    {
+      "id": 2,
+      "module": "builtin:BasicRouter",
+      "version": 1,
+      "parameters": {},
+      "mapper": {},
+      "metadata": { "designer": { "x": 300, "y": 0 } },
+      "flags": {},
+      "notes": "Une branche pour le gérant (SMS), une pour le fournisseur (WhatsApp), une pour le journal."
+    },
+    {
+      "id": 3,
+      "module": "africastalking:sendSMS",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "to": "{{connection.gerantPhone}}",
+        "message": "{{1.data.message}}"
+      },
+      "metadata": { "designer": { "x": 620, "y": -120 } },
+      "flags": {},
+      "notes": "Mettez le numéro du gérant dans la connexion ou directement ici (ex. +235...)."
+    },
+    {
+      "id": 4,
+      "module": "whatsapp-business:sendMessage",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "recipient": "{{connection.fournisseurPhone}}",
+        "type": "text",
+        "text": "Commande de réassort : {{1.data.article}} (code {{1.data.code}}). Stock actuel : {{1.data.quantite}} {{1.data.unite}}. Merci de confirmer disponibilité et prix. — {{1.data.entreprise}}"
+      },
+      "metadata": { "designer": { "x": 620, "y": 60 } },
+      "flags": {},
+      "notes": "Chaque article peut avoir son fournisseur : dupliquez la branche avec un filtre sur le code article."
+    },
+    {
+      "id": 5,
+      "module": "google-sheets:addRow",
+      "version": 2,
+      "parameters": {},
+      "mapper": {
+        "sheetId": "{{connection.sheet}}",
+        "values": ["{{now}}", "{{1.data.code}}", "{{1.data.article}}", "{{1.data.quantite}}", "{{1.data.seuil}}"]
+      },
+      "metadata": { "designer": { "x": 620, "y": 240 } },
+      "flags": {}
+    }
+  ],
+  "metadata": { "instant": true, "version": 1, "designer": { "orphans": [] }, "scenario": { "roundtrips": 1, "maxErrors": 3, "autoCommit": true } }
+}

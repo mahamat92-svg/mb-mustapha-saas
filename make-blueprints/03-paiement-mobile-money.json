@@ -1,0 +1,85 @@
+{
+  "name": "MB Mustapha — 3. Paiement Mobile Money reçu → facture payée + reçu client",
+  "flow": [
+    {
+      "id": 1,
+      "module": "gateway:CustomWebHook",
+      "version": 1,
+      "parameters": { "hook": "afriflow_paiement", "maxResults": 1 },
+      "mapper": {},
+      "metadata": { "designer": { "x": 0, "y": 0 }, "restore": {}, "parameters": {} },
+      "flags": {},
+      "notes": "Deux façons d'alimenter ce scénario : (A) l'agrégateur appelle directement ce webhook, (B) vous testez manuellement avec le bouton « Tester » de l'espace privé."
+    },
+    {
+      "id": 2,
+      "module": "http:ActionSendData",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "url": "https://VOTRE-DOMAINE.vercel.app/api/webhooks/make",
+        "method": "post",
+        "headers": [
+          { "name": "Authorization", "value": "Bearer VOTRE_AFRIFLOW_API_KEY" },
+          { "name": "Content-Type", "value": "application/json" },
+          { "name": "x-afriflow-event", "value": "paiement.reussi" }
+        ],
+        "body": {
+          "event": "paiement.reussi",
+          "orgId": "{{1.data.orgId}}",
+          "data": {
+            "factureId": "{{1.data.factureId}}",
+            "montant": "{{1.data.montant}}",
+            "provider": "{{1.data.provider}}",
+            "telephone": "{{1.data.telephone}}",
+            "reference": "{{1.data.reference}}"
+          }
+        },
+        "parseResponse": true
+      },
+      "metadata": { "designer": { "x": 300, "y": 0 } },
+      "flags": {},
+      "notes": "IMPORTANT : avant d'appeler MB Mustapha, vérifiez auprès de l'agrégateur que la transaction existe réellement (module « Get a transaction » Kkiapay/CinetPay) — ne créditez jamais à l'aveugle."
+    },
+    {
+      "id": 3,
+      "module": "whatsapp-business:sendMessage",
+      "version": 3,
+      "parameters": {},
+      "mapper": {
+        "recipient": "{{1.data.telephone}}",
+        "type": "text",
+        "text": "✅ Paiement reçu : {{1.data.montant}} FCFA (réf. {{1.data.reference}}). Merci ! Votre facture est marquée payée et votre reçu est en pièce jointe."
+      },
+      "metadata": { "designer": { "x": 620, "y": -110 } },
+      "flags": {},
+      "notes": "Ajoutez un module « Envoyer un document » si vous générez le PDF du reçu (Google Docs → PDF)."
+    },
+    {
+      "id": 4,
+      "module": "africastalking:sendSMS",
+      "version": 1,
+      "parameters": {},
+      "mapper": {
+        "to": "{{1.data.telephone}}",
+        "message": "Paiement recu : {{1.data.montant}} FCFA (ref {{1.data.reference}}). Facture reglee. Merci !"
+      },
+      "metadata": { "designer": { "x": 620, "y": 60 } },
+      "flags": {},
+      "notes": "Version sans accents ni emojis : certains opérateurs facturent plus cher les SMS non-GSM7."
+    },
+    {
+      "id": 5,
+      "module": "google-sheets:addRow",
+      "version": 2,
+      "parameters": {},
+      "mapper": {
+        "sheetId": "{{connection.sheet}}",
+        "values": ["{{now}}", "{{1.data.reference}}", "{{1.data.montant}}", "{{1.data.provider}}", "{{1.data.telephone}}", "Encaissé"]
+      },
+      "metadata": { "designer": { "x": 620, "y": 230 } },
+      "flags": {}
+    }
+  ],
+  "metadata": { "instant": true, "version": 1, "designer": { "orphans": [] }, "scenario": { "roundtrips": 1, "maxErrors": 3, "autoCommit": true } }
+}
