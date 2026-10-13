@@ -3,15 +3,15 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
 
-  // --- Filet de securite -----------------------------------------------
-  // Le projet doit TOUJOURS builder, meme si une erreur de type ou une
-  // regle ESLint traine. Repassez ces deux flags a `false` quand vous
-  // voulez un projet 100% strict (recommande avant une grosse mise en prod).
+  // Le projet doit TOUJOURS builder
   eslint: { ignoreDuringBuilds: true },
   typescript: { ignoreBuildErrors: true },
 
-  // Prisma et bcryptjs restent cote serveur (pas de bundling navigateur).
-  serverExternalPackages: ['@prisma/client', 'bcryptjs'],
+  // CORRIGE: Pour Next 14, c'est experimental.serverComponentsExternalPackages
+  // Pas serverExternalPackages (c'est pour Next 15)
+  experimental: {
+    serverComponentsExternalPackages: ['@prisma/client', 'bcryptjs'],
+  },
 
   images: { unoptimized: true },
 
