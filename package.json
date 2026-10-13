@@ -4,7 +4,7 @@
   "private": true,
   "description": "MB Mustapha - SaaS de gestion, facturation et automatisation pour les PME d'Afrique centrale et de l'Ouest (Tchad, Cameroun, Benin, Togo...). Next.js + Make.com + Mobile Money FCFA.",
   "engines": {
-    "node": ">=18.18.0"
+    "node": "20.x"
   },
   "scripts": {
     "dev": "next dev -H 0.0.0.0 -p 3000",
@@ -24,15 +24,15 @@
     "bcryptjs": "^2.4.3",
     "jose": "^5.9.6",
     "next": "^14.2.35",
-    "react": "19.0.0",
-    "react-dom": "19.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "zod": "^3.24.1"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.17.16",
-    "@types/react": "^19.0.7",
-    "@types/react-dom": "^19.0.3",
+    "@types/react": "^18.3.1",
+    "@types/react-dom": "^18.3.0",
     "autoprefixer": "^10.4.20",
     "postcss": "^8.5.1",
     "prisma": "^6.3.0",
