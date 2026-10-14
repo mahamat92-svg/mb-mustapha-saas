@@ -1,0 +1,204 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("DATABASE_URL")
+}
+
+model Organization {
+  id String @id
+  name String
+  country String
+  city String
+  currency String
+  plan String
+  planStatus String
+  phone String
+  contactEmail String
+  vatRate Float
+  createdAt DateTime @default(now())
+  users User[]
+  clients Client[]
+  invoices Invoice[]
+  stockItems StockItem[]
+  tontines Tontine[]
+  webhookLogs WebhookLog[]
+  employes Employe[]
+  eleves Eleve[]
+  subscriptions Subscription[]
+}
+
+model User {
+  id String @id @default(cuid())
+  orgId String?
+  name String
+  email String @unique
+  password String
+  phone String?
+  role String
+  createdAt DateTime @default(now())
+  organization Organization? @relation(fields: [orgId], references: [id])
+}
+
+model Subscription {
+  id String @id @default(cuid())
+  orgId String
+  plan String
+  amount Int
+  currency String
+  provider String
+  status String
+  renewAt DateTime
+  createdAt DateTime @default(now())
+  organization Organization @relation(fields: [orgId], references: [id])
+}
+
+model Client {
+  id String @id @default(cuid())
+  orgId String
+  name String
+  phone String?
+  city String?
+  type String
+  createdAt DateTime @default(now())
+  organization Organization @relation(fields: [orgId], references: [id])
+  invoices Invoice[]
+}
+
+model Invoice {
+  id String @id @default(cuid())
+  orgId String
+  number String @unique
+  clientId String?
+  label String
+  amount Int
+  total Int
+  paid Int @default(0)
+  status String
+  dueDate DateTime
+  createdAt DateTime @default(now())
+  organization Organization @relation(fields: [orgId], references: [id])
+  client Client? @relation(fields: [clientId], references: [id])
+}
+
+model StockItem {
+  id String @id @default(cuid())
+  orgId String
+  sku String
+  name String
+  qty Int
+  unit String
+  price Int
+  threshold Int
+  supplier String?
+  organization Organization @relation(fields: [orgId], references: [id])
+}
+
+model Tontine {
+  id String @id @default(cuid())
+  orgId String
+  name String
+  contribution Int
+  membersCount Int
+  pot Int
+  beneficiary String?
+  nextDate DateTime
+  organization Organization @relation(fields: [orgId], references: [id])
+  contributions Contribution[]
+}
+
+model Contribution {
+  id String @id @default(cuid())
+  tontineId String
+  member String
+  amount Int
+  channel String
+  status String
+  tontine Tontine @relation(fields: [tontineId], references: [id])
+}
+
+model WebhookLog {
+  id String @id @default(cuid())
+  orgId String
+  direction String
+  event String
+  scenario String?
+  status String
+  statusCode Int
+  payloadPreview String?
+  createdAt DateTime @default(now())
+  organization Organization @relation(fields: [orgId], references: [id])
+}
+
+model Employe {
+  id String @id @default(cuid())
+  orgId String
+  nom String
+  poste String
+  type String
+  salaireBrut Int?
+  transport Int?
+  sursalaire Int?
+  avances Int?
+  tauxJour Int?
+  telephone String?
+  organization Organization @relation(fields: [orgId], references: [id])
+}
+
+model Eleve {
+  id String @id @default(cuid())
+  orgId String
+  matricule String
+  nom String
+  sexe String
+  classe String
+  parentNom String
+  parentTelephone String
+  fraisAnnuels Int
+  fraisInscription Int
+  inscriptionPayee Boolean @default(false)
+  organization Organization @relation(fields: [orgId], references: [id])
+  tranches TrancheEcolage[]
+  encaissements EncaissementEcolage[]
+}
+
+model TrancheEcolage {
+  id String @id @default(cuid())
+  orgId String
+  eleveId String
+  numero Int
+  libelle String
+  montant Int
+  echeance DateTime
+  montantPaye Int @default(0)
+  eleve Eleve @relation(fields: [eleveId], references: [id])
+  encaissements EncaissementEcolage[]
+}
+
+model EncaissementEcolage {
+  id String @id @default(cuid())
+  orgId String
+  eleveId String
+  trancheId String?
+  montant Int
+  canal String
+  recu String @unique
+  note String?
+  date DateTime
+  eleve Eleve @relation(fields: [eleveId], references: [id])
+  tranche TrancheEcolage? @relation(fields: [trancheId], references: [id])
+}
+
+model Message {
+  id String @id @default(cuid())
+  content String?
+  createdAt DateTime @default(now())
+}
+
+model Payment {
+  id String @id @default(cuid())
+  amount Int?
+  createdAt DateTime @default(now())
+}
